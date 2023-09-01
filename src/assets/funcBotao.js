@@ -1,12 +1,13 @@
 import React from "react";
 
-export function InputBotao({ input, setInput }) {
+export function InputBotao({ input, setInput, inputAtual }) {
     if (input == "<") {
-        var novoInput = setInput.slice(0, -1);
+        var novoInput = inputAtual.slice(0, -1);
     }
     else{
-        var novoInput = setInput;
+        var novoInput = inputAtual;
         novoInput += input;
     }
+    setInput(novoInput);
     return novoInput;
 }

@@ -1,13 +1,14 @@
-import Botao from "../components/botao";
 import { React, useEffect, useState } from "react";
 import { View, SafeAreaView, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import Botao from '../components/botao';
+import Converte from "../assets/converte";
 
 export default function Conversor(){
-    const [input, setInput] = useState("a");
-    const [output, setOutput] = useState("b");
-    const [convertido, setConvertido] = useState("t$1");
-    const [conversor, setConversor] = useState("t$3");
+    const [input, setInput] = useState("");
+    const [output, setOutput] = useState("");
+    const [convertido, setConvertido] = useState("m");
+    const [conversor, setConversor] = useState('"');
 
     const digitos = [
         {id: "1", digito: "7"},
@@ -19,51 +20,84 @@ export default function Conversor(){
         {id: "7", digito: "1"},
         {id: "8", digito: "2"},
         {id: "9", digito: "3"},
-        {id: "10", digito: "0"},
-        {id: "11", digito: "<"}
+        {id: "10", digito: ","},
+        {id: "11", digito: "0"},
+        {id: "12", digito: "<"}
     ];
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={{flex: 1, backgroundColor: '#07161B'}}>
 
             {/* área onde estão os componentes de escolha da conversão */}
             <View style={styles.fundoInput}>
 
                 {/* seletor de valor do input */}
-                <Picker
-                    selectedValue={convertido}
-                    onValueChange={(itemValue) => setConvertido(itemValue)}
-                >
-                    <Picker.Item label="teste1" value="t$1"/>
-                    <Picker.Item label="teste2" value="t$2"/>
-                    <Picker.Item label="teste3" value="t$3"/>
-                </Picker>
+                <View style={styles.viewInput}>
+                    <View style={styles.viewPicker}>
+                        <Picker
+                            selectedValue={convertido}
+                            onValueChange={(itemValue) => {setConvertido(itemValue); setOutput(Converte(itemValue, conversor, input))}}
+                            style={styles.picker}
+                            dropdownIconColor= 'white'
+                        >
+                            <Picker.Item label="Centímetros" value="cm"/>
+                            <Picker.Item label="Metros" value="m"/>
+                            <Picker.Item label="Quilômetros" value="km"/>
+                            <Picker.Item label="Polegadas" value='"'/>
+                            <Picker.Item label="Pés" value="'"/>
+                            <Picker.Item label="Jardas" value="yd"/>
+                            <Picker.Item label="Milhas" value="mi"/>
+                        </Picker>
+                    </View>
 
-                {/* retorno visual do input */}
-                <Text style={styles.input}>${input}</Text>
-                <Text style={styles.unidade}>${convertido}</Text>
+                    {/* retorno visual do input */}
+                    <View style={styles.viewOutput}>
+                        <Text style={styles.input}>{input}</Text>
+                        <Text style={styles.unidade}>{convertido}</Text>
+                    </View>
+
+                </View>
 
                 {/* seletor de valor do output */}
-                <Picker
-                    selectedValue={conversor}
-                    onValueChange={(itemValue) => setConversor(itemValue)}
-                >
-                    <Picker.Item label="teste1" value="t$1"/>
-                    <Picker.Item label="teste2" value="t$2"/>
-                    <Picker.Item label="teste3" value="t$3"/>
-                </Picker>
 
-                {/* retorno visual do output */}
-                <Text style={styles.input}>${output}</Text>
-                <Text style={styles.unidade}>${conversor}</Text>
+                <View style={styles.viewInput}>
+                    <View style={styles.viewPicker}>
+                        <Picker
+                        selectedValue={conversor}
+                        onValueChange={(itemValue) => {setConversor(itemValue); setOutput(Converte(convertido, itemValue, input))}}
+                        style={styles.picker}
+                        dropdownIconColor= 'white'
+                        >
+                            <Picker.Item label="Centímetros" value="cm"/>
+                            <Picker.Item label="Metros" value="m"/>
+                            <Picker.Item label="Quilômetros" value="km"/>
+                            <Picker.Item label="Polegadas" value='"'/>
+                            <Picker.Item label="Pés" value="'"/>
+                            <Picker.Item label="Jardas" value="yd"/>
+                            <Picker.Item label="Milhas" value="mi"/>
+                        </Picker>
+                    </View>
+
+                    {/* retorno visual do output */}
+                    <View style={styles.viewOutput}>
+                        <Text style={styles.input}>{output}</Text>
+                        <Text style={styles.unidade}>{conversor}</Text>
+                    </View>
+
+                </View>
+                
+
+                
             </View>
 
             {/* área onde estão os botões para input */}
             <View style={styles.fundoBotoes}>
                 <FlatList
+                    style={{marginTop: 55}}
                     data={digitos}
+                    numColumns={3}
                     renderItem={({item}) => (
-                        <Botao texto={item.digito} setInput={setInput}/>
+                        <Botao texto={item.digito} setInput={setInput} inputAtual={input} converteD={convertido} converteP={conversor} setOutput={setOutput}/>
                     )}
                     keyExtractor={(item) => item.id}
                 />
@@ -74,19 +108,55 @@ export default function Conversor(){
 
 const styles = StyleSheet.create({
     fundoInput: {
-        backgroundColor: "#17171C",
+        backgroundColor: "#07161B",
+        paddingHorizontal: 25,
+        paddingTop: 70,
+        paddingBottom: 20,
+        flex: 1,
     },
     input: {
-        borderBottomWidth: 1,
-        borderBottomColor: "#D9D9D9",
         padding: 3,
-        color: "#FFF",
+        color: "#fff",
     },
     unidade: {
         color: "#FFF",
+        padding: 3,
     },
     fundoBotoes: {
-        backgroundColor: "#17171C",
+        backgroundColor: "#E6E6E6",
+        flex: 2,
+        paddingHorizontal: 20,
+        borderTopEndRadius: 35,
+        borderTopStartRadius: 35,
     },
+    picker: {
+        color: "#fff",
+        fontSize: 25,
+        transform: [
+            { scaleX: 1.25 }, 
+            { scaleY: 1.25 },
+        ]
+    },
+    viewInput: {
+        flexDirection: 'row',
+        alignItems: "flex-end",
+        justifyContent: "center",
+        alignSelf: "stretch",
+        width: "auto",
+        paddingVertical: 25,
+    },
+    viewPicker: {
+        borderBottomWidth: 1,
+        borderColor: 'white',
+        flex: 1,
+        // width: 60,
+    },
+    viewOutput: {
+        // width: 110, 
+        flexDirection: "row", 
+        flex: 1, 
+        justifyContent: "flex-end",
+        marginLeft: 20
+    }
 
 })

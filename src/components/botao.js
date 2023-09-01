@@ -1,17 +1,46 @@
 import { React, useEffect, useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { InputBotao } from "../assets/funcBotao";
+import Converte from "../assets/converte";
 
-export default function Botao({ texto, setInput }){
-    var categoria = "Outros";
-    if (texto == "<") {
-        categoria = "Deletar";
+export default function Botao({ texto, setInput, inputAtual, setOutput, converteD, converteP, inicial }){
+    // seta o novo input como o já existente
+    var novoInput = inputAtual;
+
+    // caso esteja menor que o tamanho máximo, permite inserção de novo dígito
+    if (String(inputAtual).length < 12 && texto != "<") {
+        
+        // em caso de caractere especial, precisa de função exclusiva
+        // apagar
+        if (texto == "<") {
+            novoInput = inputAtual.slice(0, -1);
+        }
+        // vírgula (só pode haver uma)
+        else if (texto == ",") {
+            if (!String(inputAtual).includes(",")) {
+                novoInput = inputAtual;
+                novoInput += texto;
+            }
+        }
+        // caso contrário, insere normalmente o dígito
+        else{
+            novoInput = inputAtual;
+            novoInput += texto;
+        }
     }
-    const categorias = {Deletar: "#FF924F", Outros: "#00911F"}
+    else if (texto == "<") {
+        novoInput = inputAtual.slice(0, -1);
+    }
+
+    var categoria = "Numeros";
+    if (texto == "<" || texto == ",") {
+        categoria = "Especiais";
+    }
+    const categorias = {Especiais: "#4B5EFC", Numeros: "#2E2F38"}
     const estilos = styleFunction(categorias[categoria])
     return(
-        <TouchableOpacity style={estilos.botao} onPress={InputBotao(texto, setInput)}>
-            <Text>{texto}</Text>
+                                                                                    // apagar tudo quando segurar o botão de apagar
+        <TouchableOpacity style={estilos.botao} onPress={() => {setInput(novoInput); setOutput(Converte(converteD, converteP, novoInput))}} onLongPress={() => {texto == "<"? setInput("") : setInput(inputAtual); texto == "<"? setOutput("") : setOutput(Converte(converteD, converteP, inputAtual))}}>
+            <Text style={estilos.texto}>{texto}</Text>
         </TouchableOpacity>
     );
 }
@@ -23,14 +52,16 @@ const styleFunction = (cor) => StyleSheet.create({
     botao: {
         flex: 3,
         backgroundColor: cor,
-        borderRadius: 45,
-        width: 50,
+        borderRadius: 30,
+        width: 96,
+        height: 72,
         alignItems: "center",
         justifyContent: "center",
+        margin: 5,
     },
     texto: {
         color: "#FFF",
-        fontSize: 12,
+        fontSize: 40,
     },
 })
     
