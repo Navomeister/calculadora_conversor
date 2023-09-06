@@ -22,7 +22,7 @@ export default function Conversor(){
         {id: "9", digito: "3"},
         {id: "10", digito: ","},
         {id: "11", digito: "0"},
-        {id: "12", digito: "<"}
+        {id: "12", digito: "⌫"}
     ];
 
     return(

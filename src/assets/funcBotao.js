@@ -1,7 +1,7 @@
 import React from "react";
 
 export function InputBotao({ input, setInput, inputAtual }) {
-    if (input == "<") {
+    if (input == "⌫") {
         var novoInput = inputAtual.slice(0, -1);
     }
     else{

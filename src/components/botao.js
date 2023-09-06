@@ -7,11 +7,11 @@ export default function Botao({ texto, setInput, inputAtual, setOutput, converte
     var novoInput = inputAtual;
 
     // caso esteja menor que o tamanho máximo, permite inserção de novo dígito
-    if (String(inputAtual).length < 12 && texto != "<") {
+    if (String(inputAtual).length < 12 && texto != "⌫") {
         
         // em caso de caractere especial, precisa de função exclusiva
         // apagar
-        if (texto == "<") {
+        if (texto == "⌫") {
             novoInput = inputAtual.slice(0, -1);
         }
         // vírgula (só pode haver uma)
@@ -27,19 +27,21 @@ export default function Botao({ texto, setInput, inputAtual, setOutput, converte
             novoInput += texto;
         }
     }
-    else if (texto == "<") {
+    else if (texto == "⌫") {
         novoInput = inputAtual.slice(0, -1);
     }
 
     var categoria = "Numeros";
-    if (texto == "<" || texto == ",") {
+    if (texto == "⌫" || texto == ",") {
         categoria = "Especiais";
     }
     const categorias = {Especiais: "#4B5EFC", Numeros: "#2E2F38"}
     const estilos = styleFunction(categorias[categoria])
     return(
                                                                                     // apagar tudo quando segurar o botão de apagar
-        <TouchableOpacity style={estilos.botao} onPress={() => {setInput(novoInput); setOutput(Converte(converteD, converteP, novoInput))}} onLongPress={() => {texto == "<"? setInput("") : setInput(inputAtual); texto == "<"? setOutput("") : setOutput(Converte(converteD, converteP, inputAtual))}}>
+        <TouchableOpacity style={estilos.botao} 
+        onPress={() => {setInput(novoInput); setOutput(Converte(converteD, converteP, novoInput))}} 
+        onLongPress={() => {texto == "⌫"? setInput("") : setInput(inputAtual); texto == "⌫"? setOutput("") : setOutput(Converte(converteD, converteP, inputAtual))}}>
             <Text style={estilos.texto}>{texto}</Text>
         </TouchableOpacity>
     );
@@ -52,7 +54,7 @@ const styleFunction = (cor) => StyleSheet.create({
     botao: {
         flex: 3,
         backgroundColor: cor,
-        borderRadius: 30,
+        borderRadius: 25,
         width: 96,
         height: 72,
         alignItems: "center",
