@@ -34,6 +34,10 @@ export default function Converte(converteD, converteP, inicial) {
             case "cm":
                 convertido = (valor / 0.01);
                 break;
+
+            case "km":
+                convertido = (valor / 1000);
+                break;
         
             default:
                 break;
@@ -61,6 +65,10 @@ export default function Converte(converteD, converteP, inicial) {
             case "cm":
                 convertido = (valor * 2.54);
                 break;
+
+            case "km":
+                convertido = (valor / 39370);
+                break;
         
             default:
                 break;
@@ -86,6 +94,10 @@ export default function Converte(converteD, converteP, inicial) {
     
             case "cm":
                 convertido = (valor * 30.48);
+                break;
+
+            case "km":
+                convertido = (valor / 3281);
                 break;
         
             default:
@@ -113,6 +125,10 @@ export default function Converte(converteD, converteP, inicial) {
             case "cm":
                 convertido = (valor * 91.44);
                 break;
+
+            case "km":
+                convertido = (valor / 1094);
+                break;
         
             default:
                 break;
@@ -138,6 +154,10 @@ export default function Converte(converteD, converteP, inicial) {
     
             case "cm":
                 convertido = (valor / 0.01);
+                break;
+
+            case "km":
+                convertido = (valor * 1.609);
                 break;
         
             default:
